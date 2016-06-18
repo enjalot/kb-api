@@ -54,6 +54,14 @@ class Photograph < ActiveRecord::Base
 
         sizes = flickr.photos.getSizes(photo_id: p.flickr_id)
 
+        thumb = sizes.find {|s| s.label == 'Large Square' }
+        thumb_path = photos.join("#{p.flickr_id}-thumb.jpg")
+
+        # Thumbnail
+        File.open(thumb_path, 'wb') do |f|
+          f.print(open(thumb.source).read)
+        end
+
         original = sizes.find do |s|
           s.label == 'Original'
         end
@@ -78,6 +86,7 @@ class Photograph < ActiveRecord::Base
         end
 
         p.harvested_url = original.source
+        p.thumb_url = thumb.source
         p.harvested = true
 
       rescue => error
