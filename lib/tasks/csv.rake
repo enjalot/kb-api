@@ -25,12 +25,12 @@ namespace :csv do
     args.with_defaults(path: 'photos.csv')
 
     CSV.open(args.path, 'w',
-      :headers => ['url', 'longitude', 'latitude'],
+      :headers => ['id', 'url', 'thumb', 'longitude', 'latitude', 'title', 'address'],
       :write_headers => true,
     ) do |fh|
 
       Photograph.where { lonlat != nil }.each do |p|
-        fh << [p.url, p.lonlat.x, p.lonlat.y]
+        fh << [p.flickr_id, p.harvested_url, p.thumb_url, p.lonlat.x, p.lonlat.y, p.title, p.address]
       end
 
     end
