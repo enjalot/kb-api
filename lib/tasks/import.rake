@@ -14,9 +14,24 @@ runner = Vacuum::Runner.from_steps([
   Import::CreateSupplementPhotographs,
   Import::ApplyPhotographCorrections,
 
+  Import::CreateRoadsRocque,
+  Import::CreateRoadsOS,
+
   Import::LinkPeopleWithEvents,
   Import::LinkPeopleWithOccupations,
 
+])
+
+road_runner = Vacuum::Runner.from_steps([
+  Import::CreateRoadsRocque,
+  Import::CreateRoadsOS,
+])
+
+
+photo_runner = Vacuum::Runner.from_steps([
+  Import::CreatePhotographs,
+  Import::CreateSupplementPhotographs,
+  Import::ApplyPhotographCorrections,
 ])
 
 namespace :db do
@@ -47,11 +62,25 @@ namespace :db do
   end
 end
 
+namespace :roads do
+  desc 'Load road networks into PostgresSQL'
+  task :import, [:step] => :environment do |t, args|
+    args.with_defaults(step: nil)
+    road_runner.up(args.step)
+  end
+end
+
 namespace :photos do
 
   desc 'Harvest photos from Flickr'
   task :harvest => :environment do
     Photograph.harvest
+  end
+
+  desc 'Import photos independently'
+  task :import, [:step] => :environment do |t, args|
+    args.with_defaults(step: nil)
+    photo_runner.up(args.step)
   end
 
 end

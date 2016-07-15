@@ -4,8 +4,8 @@ module Import
 
     def up
       #shapefile = "rocquev2/rocque_segments.shp"
-      shapefile = "data/geo/roads/rocque/rocqueqa1/Rocque_QA1_2.shp"
-      crossings_shapefile = "data/geo/roads/rocque/crossings/crossings.shp"
+      #shapefile = "data/geo/roads/rocque/rocque/Rocque_QA_final.shp"
+      shapefile = "data/geo/roads/rocque/rocque/roc_lines.shp"
       importfile = "data/geo/roads/rocque/importer.sql"
       dbname = "kl_development"
       tablename = "roads_rocque"
@@ -14,8 +14,6 @@ module Import
       value = %x(echo 'importing #{shapefile} into #{dbname} #{tablename}')
       puts value
       value = %x(ogr2ogr -f "PostgreSQL" PG:"dbname=#{dbname} user=#{username}" "#{shapefile}" -nln #{tablename} -s_srs EPSG:3857 -t_srs EPSG:4326)
-      puts value
-      value = %x(ogr2ogr -f "PostgreSQL" PG:"dbname=#{dbname} user=#{username}" "#{crossings_shapefile}" -nln #{tablename} -s_srs EPSG:3857 -t_srs EPSG:4326 -append)
       puts value
       value = %x(psql -d #{dbname} -a -f #{importfile})
       puts value

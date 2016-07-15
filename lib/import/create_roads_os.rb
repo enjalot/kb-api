@@ -4,7 +4,7 @@ module Import
 
     def up
       #shapefile = "rocquev2/rocque_segments.shp"
-      shapefile = "data/geo/roads/os/os_beta/R_Z_J_620.shp"
+      shapefile = "data/geo/roads/os/os_beta/os_lines.shp"
       importfile = "data/geo/roads/os/importer.sql"
       dbname = "kl_development"
       tablename = "roads_os"
