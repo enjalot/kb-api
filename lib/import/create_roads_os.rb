@@ -8,11 +8,10 @@ module Import
       importfile = "data/geo/roads/os/importer.sql"
       dbname = "kl_development"
       tablename = "roads_os"
-      username = "enjalot" # TODO: figure out the actual way to do this
 
       value = %x(echo 'importing #{shapefile} into #{dbname} #{tablename}')
       puts value
-      value = %x(ogr2ogr -f "PostgreSQL" PG:"dbname=#{dbname} user=#{username}" "#{shapefile}" -nln #{tablename} -s_srs EPSG:3857 -t_srs EPSG:4326)
+      value = %x(ogr2ogr -f "PostgreSQL" PG:"dbname=#{dbname}" "#{shapefile}" -nln #{tablename} -s_srs EPSG:3857 -t_srs EPSG:4326)
       puts value
       value = %x(psql -d #{dbname} -a -f #{importfile})
       puts value
