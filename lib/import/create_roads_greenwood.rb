@@ -1,13 +1,13 @@
 
 module Import
-  class CreateRoadsOS < Step
+  class CreateRoadsGreenwood < Step
 
     def up
       #shapefile = "rocquev2/rocque_segments.shp"
-      shapefile = "data/geo/roads/os/os_0819/OS_London_QA1_0819.shp"
-      importfile = "data/geo/roads/os/importer.sql"
+      shapefile = "data/geo/roads/greenwood/greenwood_0819/Greenwood_0819.shp"
+      importfile = "data/geo/roads/greenwood/importer.sql"
       dbname = "kl_development"
-      tablename = "roads_os"
+      tablename = "roads_greenwood"
 
       value = %x(echo 'importing #{shapefile} into #{dbname} #{tablename}')
       puts value
@@ -15,7 +15,7 @@ module Import
       puts value
       value = %x(psql -d #{dbname} -a -f #{importfile})
       puts value
-      puts "done creating OS roads"
+      puts "done creating Greenwood roads"
     end
 
     def down
